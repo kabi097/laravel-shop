@@ -13972,3 +13972,12 @@ a.text-dark:focus {
   clip: auto;
 }
 
+#cart {
+  position: absolute;
+  top: 65px;
+  right: 15px;
+  width: 25rem;
+  min-height: 150px;
+  z-index: 1000;
+}
+
