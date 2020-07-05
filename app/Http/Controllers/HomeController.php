@@ -55,6 +55,9 @@ class HomeController extends Controller
             'productId' => 'required|exists:products,id',
             'quantity' => 'required|integer|gt:0',
         ]);
+        if ($validatedData['quantity'] > Product::find($request->input('productId'))->quantity) {
+            return $request->session()->get('cart');
+        }
         $cart = $request->session()->get('cart');
         if (!$cart) {
             $cart = [];
