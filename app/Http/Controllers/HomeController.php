@@ -39,4 +39,33 @@ class HomeController extends Controller
     public function product(Product $product) {
         return view('product', ['product' => $product]);
     }
+
+    public function summary() {
+        return view('summary');
+    }
+
+    public function submit_cart(Request $request) {
+        $this->session()->put('cart', $request->post());
+        
+        return $this->session()->get();
+    }
+
+    public function add_to_cart(Request $request) {
+        $validatedData = $request->validate([
+            'productId' => 'required|exists:products,id',
+            'quantity' => 'required|integer|gt:0',
+        ]);
+        $cart = $request->session()->get('cart');
+        if (!$cart) {
+            $cart = [];
+        }
+        $found = array_search($validatedData['productId'], array_column($cart, 'productId'));
+        if ($found === False) {
+            $cart[] = $validatedData;   
+        } else {
+            $cart[$found]['quantity'] += $validatedData['quantity'];
+        }
+        $request->session()->put('cart', $cart);
+        return $request->session()->get('cart');
+    }
 }

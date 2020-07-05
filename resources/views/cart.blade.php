@@ -1,57 +1,60 @@
-@extends('layouts.default')
-
-@section('content')
-    <div class="py-5 bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-9">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title font-weight-bold border-bottom pb-2">Zamówienie</h4>
-                            <div class="card-text d-flex align-items-start">
-                                <img src="https://via.placeholder.com/100x100" class="img-fluid rounded mr-3 py-2">
-                                <div class="w-100 border-bottom py-2">
-                                    <h4 class="font-weight-bold">Microsoft Office 2007</h4>
-                                    <p>Cena: <b>140 zł</b></p>
-                                    <div class="d-inline-block mb-1">Ilość: <input type="number" class="form-control" min=1 max=100 value=1 aria-describedby="helpId" placeholder="Ilość"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card my-3">
-                        <div class="card-body">
-                            <h4 class="card-title font-weight-bold border-bottom pb-2">Płatność i dostawa</h4>
-                            <p class="card-text">Text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="card">
-                      <div class="card-body">
-                        <h4 class="card-title font-weight-bold border-bottom pb-2">Podsumowanie</h4>
-                        <div class="card-text my-2">
-                            <table class="table table-borderless mb-2">
-                                <tr>
-                                    <td>Ilość</td>
-                                    <td class="font-weight-bold">4</td>
-                                </tr>
-                                <tr>
-                                    <td>Razem</td>
-                                    <td class="font-weight-bold">420 zł</td>
-                                </tr>
-                                <tr>
-                                    <td>Metoda płatności</td>
-                                    <td class="font-weight-bold">MasterCard</td>
-                                </tr>
-                            </table>
-                            <button type="submit" name="" id="" class="btn btn-block btn-success" btn-lg btn-block">
-                                Kupuję i płacę
-                            </button>
-                        </div>
-                      </div>
-                    </div>
+<div id="cart" class="card rounded">
+    <div class="card-body">
+        <h5 class="text-center border-bottom pb-2 m-0">
+            <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
+            Twój koszyk
+        </h5>
+        <div class="card-text d-flex align-items-center pb-3 border-bottom product mt-1" data-product-id="54" data-price="140" data-quantity="10">
+            <div class="pl-1 mr-2 pt-1">
+                <button type="button" class="btn btn-outline product-delete">
+                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div>
+                <p class="m-0 font-weight-bold">Microsoft Office 2007</p>
+                <div class="btn-group w-50" role="group" aria-label="">
+                    <button type="button" class="btn btn-sm btn-outline-info product-minus">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </button>
+                    <input type="text" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="1" readonly>
+                    <button type="button" class="btn btn-sm btn-outline-info product-plus">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
+            <div class="text-center mr-3 ml-auto font-weight-bold text-nowrap product-price">
+                140 zł
+            </div>
         </div>
+        <div class="card-text d-flex align-items-center pb-3 border-bottom product mt-1" data-product-id="54" data-price="140" data-quantity="10">
+            <div class="pl-1 mr-2 pt-1">
+                <button type="button" class="btn btn-outline product-delete">
+                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div>
+                <p class="m-0 font-weight-bold">Microsoft Office 2007</p>
+                <div class="btn-group w-50" role="group" aria-label="">
+                    <button type="button" class="btn btn-sm btn-outline-info product-minus">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </button>
+                    <input type="text" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="1" readonly>
+                    <button type="button" class="btn btn-sm btn-outline-info product-plus">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="text-center mr-3 ml-auto font-weight-bold text-nowrap product-price">
+                140 zł
+            </div>
+        </div>
+        <h5 class="p-2">
+            <p class="float-left">Razem:</p>
+            <p class="float-right font-weight-bold" id="product-summary">146 zł</p>
+        </h5>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+            <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
+            Idź do kasy
+        </button>
     </div>
-@endsection
+</div>

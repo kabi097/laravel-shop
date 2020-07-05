@@ -58,36 +58,7 @@
                 </ul>                
             </div>
         </nav>
-        <div id="cart" class="card rounded">
-            <div class="card-body">
-                <h5 class="text-center border-bottom pb-2">
-                    <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
-                    Twój koszyk
-                </h5>
-                <div class="card-text d-flex align-items-center pb-3 border-bottom product" id="product-54">
-                    <div class="pl-1 mr-2 pt-1">
-                        <button type="button" class="btn btn-outline">
-                            <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <div>
-                        <p class="m-0 font-weight-bold">Microsoft Office 2007</p>
-                        <div class="btn-group w-50" role="group" aria-label="">
-                            <button type="button" class="btn btn-sm btn-outline-info">
-                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
-                            </button>
-                            <input type="text" class="form-control w-50 form-control-sm" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="1" readonly>
-                            <button type="button" class="btn btn-sm btn-outline-info">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="text-center mr-3 ml-auto font-weight-bold">
-                        140zł
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('cart')
         @yield('content')
     </div>
 </body>

@@ -14,14 +14,16 @@
                             <h5 class="mt-4 text-danger font-weight-bold">Cena: {{ $product->price }} zł</h5>
                             <h5 class="mb-4">Ilość: {{ $product->quantity > 1 ? $product->quantity . ' sztuk' : $product->quantity . ' sztuka' }} </h5>
                             <p class="card-text">{{ $product->description }}</p>                            
-                            <div class="form-group" method="PUT">
+                            <form class="form-group" method="POST" action="{{ route("add_to_cart") }}">
                                 @method('PUT')
+                                @csrf
+                                <input type="hidden" name="productId" value="{{ $product->id }}">
                                 <button type="submit" class="btn btn-primary float-left mr-3 mb-3">Dodaj do koszyka</button>
                                 <div class="float-left">
-                                    <input type="number" class="form-control" min=1 max={{ $product->quantity }} value=1 aria-describedby="helpId" placeholder="">
+                                    <input type="number" class="form-control" name="quantity" min=1 max={{ $product->quantity }} value=1 aria-describedby="helpId" placeholder="">
                                     <small id="helpId" class="form-text text-muted">Ilość sztuk</small>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
