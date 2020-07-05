@@ -51,13 +51,11 @@ class HomeController extends Controller
     }
 
     public function add_to_cart(Request $request) {
+        // $request->session()->flush();
         $validatedData = $request->validate([
             'productId' => 'required|exists:products,id',
             'quantity' => 'required|integer|gt:0',
         ]);
-        if ($validatedData['quantity'] > Product::find($request->input('productId'))->quantity) {
-            return $request->session()->get('cart');
-        }
         $cart = $request->session()->get('cart');
         if (!$cart) {
             $cart = [];
@@ -68,7 +66,9 @@ class HomeController extends Controller
         } else {
             $cart[$found]['quantity'] += $validatedData['quantity'];
         }
-        $request->session()->put('cart', $cart);
+        if ($cart[$found]['quantity'] <= Product::find($request->input('productId'))->quantity) {
+            $request->session()->put('cart', $cart);
+        }
         return $request->session()->get('cart');
     }
 }
