@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
+use Validator;
 
 class HomeController extends Controller
 {
@@ -23,9 +24,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::all()->take(6);
+
 
         return view('index', ['products' => $products]);
     }
@@ -52,14 +54,25 @@ class HomeController extends Controller
 
     public function add_to_cart(Request $request) {
         // $request->session()->flush();
-        $validatedData = $request->validate([
-            'productId' => 'required|exists:products,id',
-            'quantity' => 'required|integer|gt:0',
-        ]);
+
         $cart = $request->session()->get('cart');
         if (!$cart) {
             $cart = [];
         }
+        // dd($request);
+        // if ($request->getContentType()=='json') {
+        //     $data = [ 'data' => $request->json() ];
+        //     $validatedData = Validator::make($data, [
+        //         'data.*' => 'required|array',
+        //         // '*.productId' => 'required|exists:products,id',
+        //         // '*.quantity' => 'required|integer|gt:0',
+        //     ]);
+        // } else {
+            $validatedData = $request->validate([
+                'productId' => 'required|exists:products,id',
+                'quantity' => 'required|integer|gt:0',
+            ]);
+        // }
         $found = array_search($validatedData['productId'], array_column($cart, 'productId'));
         if ($found === False) {
             $cart[] = $validatedData;   
@@ -69,6 +82,6 @@ class HomeController extends Controller
         if ($cart[$found]['quantity'] <= Product::find($request->input('productId'))->quantity) {
             $request->session()->put('cart', $cart);
         }
-        return $request->session()->get('cart');
+        return view('cart');
     }
 }

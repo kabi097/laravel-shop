@@ -14,9 +14,7 @@
                             <h5 class="mt-4 text-danger font-weight-bold">Cena: {{ $product->price }} zł</h5>
                             <h5 class="mb-4">Ilość: {{ $product->quantity > 1 ? $product->quantity . ' sztuk' : $product->quantity . ' sztuka' }} </h5>
                             <p class="card-text">{{ $product->description }}</p>                            
-                            <form class="form-group" method="POST" action="{{ route("add_to_cart") }}">
-                                @method('PUT')
-                                @csrf
+                            <form class="form-group" id="product_form" method="POST" action="{{ route("add_to_cart") }}">
                                 <input type="hidden" name="productId" value="{{ $product->id }}">
                                 <button type="submit" class="btn btn-primary float-left mr-3 mb-3">Dodaj do koszyka</button>
                                 <div class="float-left">

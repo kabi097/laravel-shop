@@ -37287,21 +37287,46 @@ $(document).ready(function () {
   var debounce = null;
   var cart = $("#cart"); // cart.hide();
 
-  $("#cart .cart-button").on('click', function () {
+  $("#cart-button").on('click', function () {
     cart.toggle();
+  });
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
   });
 
   function sendData() {
-    var data = [];
+    var products = [];
     $("#cart .product").each(function () {
-      data.push({
-        'productId': $(this).data("product-id"),
-        'quantity': $(this).find('.product-quantity').val()
+      products.push({
+        "productId": $(this).data("product-id"),
+        "quantity": parseInt($(this).find('.product-quantity').val(), 10)
       });
     });
-    console.log(data);
+    console.log(products);
+    $.ajax({
+      type: "POST",
+      url: '/add_to_cart',
+      data: JSON.stringify(products),
+      dataType: 'json',
+      contentType: 'application/json',
+      success: function success(data) {
+        // $('#cart').html(data);
+        calculateSum();
+      }
+    });
   }
 
+  function calculateSum() {
+    var sum = 0;
+    $(".product").each(function () {
+      sum += parseInt($(this).data("price"), 10) * parseInt($(this).find(".product-quantity").val(), 10);
+    });
+    $("#product-summary").text(sum + " zł");
+  }
+
+  calculateSum();
   $("#cart .product-plus").on('click', function () {
     $(this).siblings('.product-quantity').val(function (i, oldval) {
       if (parseInt(oldval, 10) < $(this).parents(".product").data("quantity")) {
@@ -37332,11 +37357,19 @@ $(document).ready(function () {
   });
   $("#cart .product-quantity").change(function () {
     $(this).parent().parent().siblings(".product-price").text(parseInt($(this).parents(".product").data("price"), 10) * parseInt($(this).val(), 10) + ' zł');
-    var sum = 0;
-    $(".product").each(function () {
-      sum += parseInt($(this).data("price"), 10) * parseInt($(this).find(".product-quantity").val(), 10);
+    calculateSum();
+  });
+  $("#product_form").on('submit', function (e) {
+    e.preventDefault();
+    $.ajax({
+      type: "post",
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      success: function success(data) {
+        $('#cart').html(data);
+        calculateSum();
+      }
     });
-    $("#product-summary").text(sum + " zł");
   });
 });
 

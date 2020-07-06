@@ -50,7 +50,6 @@
                         </li>    
                         <li class="nav-item active">
                             <form class="form-inline" method="POST" action="{{ route("logout") }}">
-                                @csrf
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-key" aria-hidden="true"></i> Wyloguj się</button>
                             </form>
                         </li>
@@ -58,7 +57,9 @@
                 </ul>                
             </div>
         </nav>
-        @include('cart')
+        <div id="cart" class="card rounded">
+            @include('cart')
+        </div>
         @yield('content')
     </div>
 </body>
