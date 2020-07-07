@@ -1,11 +1,9 @@
 $(document).ready(function () {
     var debounce = null;
-    var cart = $("#cart");
-    // cart.hide();
-    $("#cart-button").on('click', function () {
-        cart.toggle();
+    $("body").on('click', '#cart-button', function () {
+        $("#cart").toggle();
     });
-    
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -28,25 +26,30 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function(data)
             {
-                $.getScript('/js/app.js', function() {
-                    $('#cart').html(data);
-                });
+                $('#cart').replaceWith(data);
+                $('#cart').show();
                 calculateSum();
             }
         });
     }
 
     function calculateSum() {
-        var sum = 0;
-        $(".product").each(function () {
-            sum += parseInt($(this).data("price"), 10) * parseInt($(this).find(".product-quantity").val(), 10);
-        });
-        $("#product-summary").text(sum + " zł");
+        if ($("#cart .product").length > 0) {
+            var sum = 0;
+            $(".product").each(function () {
+                sum += parseInt($(this).data("price"), 10) * parseInt($(this).find(".product-quantity").val(), 10);
+            });
+            $("#product-summary").text(sum + " zł");
+            $("#cart-badge").show();
+            $("#cart-badge").text($("#cart .product").length);
+        } else {
+            $("#cart-badge").hide();
+        }
     }
 
     calculateSum();
 
-    $("#cart .product-plus").on('click', function() {
+    $("body").on('click', '#cart .product-plus', function() {
         $(this).siblings('.product-quantity').val(function (i, oldval) {
             if (parseInt( oldval, 10) < $(this).parents(".product").data("quantity")) {
                 clearTimeout(debounce);
@@ -58,7 +61,7 @@ $(document).ready(function () {
         }).change();
     });
 
-    $("#cart .product-minus").on('click', function() {
+    $("body").on('click', '#cart .product-minus', function() {
         $(this).siblings('.product-quantity').val(function (i, oldval) {
             if (parseInt( oldval, 10) > 1) {
                 clearTimeout(debounce);
@@ -70,7 +73,7 @@ $(document).ready(function () {
         }).change();
     });
 
-    $("#cart .product-delete").on('click', function () {
+    $("body").on('click', '#cart .product-delete', function () {
         $(this).parents('.product').fadeOut(400, function() {
             $(this).remove(); 
             sendData();
@@ -82,7 +85,7 @@ $(document).ready(function () {
         calculateSum();
     });
 
-    $("#product_form").on('submit', function (e) {
+    $("body").on('submit', '#product_form', function (e) {
         e.preventDefault();
         $.ajax({
             type: "post",
@@ -90,9 +93,8 @@ $(document).ready(function () {
             data: $(this).serialize(),
             success: function(data)
             {
-                $.getScript('/js/app.js', function() {
-                    $('#cart').html(data);
-                });
+                $('#cart').replaceWith(data);
+                $('#cart').show();
                 calculateSum();
             }
         });

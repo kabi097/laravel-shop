@@ -1,9 +1,10 @@
+<div id="cart" class="card rounded" style="display: none;">
 <div class="card-body">
     <h5 class="text-center border-bottom pb-2 m-0">
         <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
         Twój koszyk
     </h5>
-    @isset($cart)
+    @if(isset($cart) && $cart !== [])
         @foreach ($cart as $product)
             <div class="card-text d-flex align-items-center pb-3 border-bottom product mt-1" data-product-id="{{ $product['productId'] }}" data-price="{{ $product['product']->price }}" data-quantity="{{ $product['product']->quantity }}">
                 <div class="pl-1 mr-2 pt-1">
@@ -39,4 +40,5 @@
     @else
         <h5 class="text-center pt-4">Brak produktów w koszyku</h5>
     @endisset
+</div>
 </div>

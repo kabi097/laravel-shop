@@ -55,8 +55,12 @@ class HomeController extends Controller
 
     public function add_to_cart(Request $request) {
         // $request->session()->flush();
+        if ($request->all() == []) {
+            $request->session()->put('cart', []);
+            return view('cart');
+        }
+
         $cart = $request->session()->get('cart');
-        
         if (!$cart) {
             $cart = [];
         }

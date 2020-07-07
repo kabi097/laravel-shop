@@ -23,7 +23,7 @@
                                 <h6 class="card-subtitle text-muted mb-1"><a href="{{ action('HomeController@products', $product->category) }}">{{ $product->category->name }}</a></h6>
                                 <p class="card-text text-justify">{{ Str::substr($product->description, 0, 50)."..." }}</p>
                                 <div class="mt-auto">
-                                    <a href="{{ action("HomeController@product", $product) }}" class="btn btn-outline-primary float-right self-align-end">Cena: 150 zł</a>
+                                    <a href="{{ action("HomeController@product", $product) }}" class="btn btn-outline-primary float-right self-align-end">Cena: {{ $product->price }} zł</a>
                                 </div>
                             </div>
                         </div>

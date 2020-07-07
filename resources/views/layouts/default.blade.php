@@ -46,7 +46,15 @@
                         </li>
                     @else
                         <li class="nav-item active">
-                            <button type="submit" id="cart-button" class="btn btn-primary"><i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i> Twój koszyk</button>
+                            <button type="submit" id="cart-button" class="btn btn-primary">
+                                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i> 
+                                Twój koszyk
+                                <span class="badge badge-pill badge-success" id="cart-badge" style="display: none;">
+                                    @if (isset($cart) && $cart != [])
+                                        {{ count($cart) }}
+                                    @endif
+                                </span>
+                            </button>
                         </li>    
                         <li class="nav-item active">
                             <form class="form-inline" method="POST" action="{{ route("logout") }}">
@@ -57,9 +65,7 @@
                 </ul>                
             </div>
         </nav>
-        <div id="cart" class="card rounded">
-            @include('cart')
-        </div>
+        @include('cart')
         @yield('content')
     </div>
 </body>

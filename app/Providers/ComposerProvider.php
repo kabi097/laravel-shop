@@ -31,7 +31,7 @@ class ComposerProvider extends ServiceProvider
         });
 
         Validator::replacer('maxquantity', function ($message, $attribute, $rule, $parameters) {
-            return "The number of products is too high";
+            return "The number of products is too high.";
         });
 
     
