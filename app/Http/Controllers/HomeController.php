@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class HomeController extends Controller
 {
@@ -54,34 +55,44 @@ class HomeController extends Controller
 
     public function add_to_cart(Request $request) {
         // $request->session()->flush();
-
         $cart = $request->session()->get('cart');
+        
         if (!$cart) {
             $cart = [];
         }
-        // dd($request);
-        // if ($request->getContentType()=='json') {
-        //     $data = [ 'data' => $request->json() ];
-        //     $validatedData = Validator::make($data, [
-        //         'data.*' => 'required|array',
-        //         // '*.productId' => 'required|exists:products,id',
-        //         // '*.quantity' => 'required|integer|gt:0',
-        //     ]);
-        // } else {
-            $validatedData = $request->validate([
-                'productId' => 'required|exists:products,id',
-                'quantity' => 'required|integer|gt:0',
-            ]);
-        // }
-        $found = array_search($validatedData['productId'], array_column($cart, 'productId'));
-        if ($found === False) {
-            $cart[] = $validatedData;   
+
+        if ($request->getContentType()=='json') {
+            $data = [ 'data' => $request->all() ];
         } else {
-            $cart[$found]['quantity'] += $validatedData['quantity'];
+            $data = [ 'data' => [ $request->all() ] ];
         }
-        if ($cart[$found]['quantity'] <= Product::find($request->input('productId'))->quantity) {
-            $request->session()->put('cart', $cart);
+
+        $validatedData = Validator::make($data, [
+            'data.*' => 'required',
+            'data.*.productId' => 'required|distinct|exists:products,id',
+            'data.*.quantity' => 'required|integer|gt:0|maxquantity:data.*.productId',
+        ])->validate();
+
+        if ($request->getContentType()=='json') {
+            $cart = $validatedData['data'];
+        } else {
+            foreach($validatedData['data'] as $product) {
+                $found = array_search($product['productId'], array_column($cart, 'productId'));
+                if ($found === False) {
+                    $cart[] = $product;   
+                } else {
+                    $productQuantity = Product::find($product['productId'])->quantity;
+                    if (($cart[$found]['quantity'] + $product['quantity']) <= $productQuantity) {
+                        $cart[$found]['quantity'] += $product['quantity'];
+                    } else {
+                        $cart[$found]['quantity'] = $productQuantity;
+                        // throw ValidationException::withMessages(['quantity' => 'Quantity number is too high!'])
+                    }
+                }
+            }
         }
+
+        $request->session()->put('cart', $cart);
         return view('cart');
     }
 }

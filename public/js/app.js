@@ -37304,15 +37304,16 @@ $(document).ready(function () {
         "quantity": parseInt($(this).find('.product-quantity').val(), 10)
       });
     });
-    console.log(products);
     $.ajax({
-      type: "POST",
+      type: "post",
       url: '/add_to_cart',
       data: JSON.stringify(products),
-      dataType: 'json',
+      dataType: 'text',
       contentType: 'application/json',
       success: function success(data) {
-        // $('#cart').html(data);
+        $.getScript('/js/app.js', function () {
+          $('#cart').html(data);
+        });
         calculateSum();
       }
     });
@@ -37366,7 +37367,9 @@ $(document).ready(function () {
       url: $(this).attr('action'),
       data: $(this).serialize(),
       success: function success(data) {
-        $('#cart').html(data);
+        $.getScript('/js/app.js', function () {
+          $('#cart').html(data);
+        });
         calculateSum();
       }
     });
