@@ -18,7 +18,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/products/{category?}', 'HomeController@products')->name('products');
 Route::get('/product/{product?}', 'HomeController@product')->name('product');
-Route::get('/summary', 'CartController@index')->name('summary');
+Route::get('/summary', 'HomeController@summary')->name('summary');
 Route::post('/add_to_cart', 'HomeController@add_to_cart')->name('add_to_cart');
 
 Route::get('refresh-csrf', function(){

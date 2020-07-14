@@ -29,7 +29,6 @@ class HomeController extends Controller
     {
         $products = Product::all()->take(6);
 
-
         return view('index', ['products' => $products]);
     }
 
@@ -43,21 +42,18 @@ class HomeController extends Controller
         return view('product', ['product' => $product]);
     }
 
-    public function summary() {
-        return view('summary');
-    }
-
-    public function submit_cart(Request $request) {
-        $this->session()->put('cart', $request->post());
-        
-        return $this->session()->get();
+    public function summary(Request $request) {
+        $cart = $request->session()->get('cart');
+        if (!$cart) redirect('/');
+        return view('summary', ['cart' => $cart]);
     }
 
     public function add_to_cart(Request $request) {
         // $request->session()->flush();
         if ($request->all() == []) {
             $request->session()->put('cart', []);
-            return view('cart');
+            return response()->json([]);
+            // return view('cart');
         }
 
         $cart = $request->session()->get('cart');
@@ -95,8 +91,14 @@ class HomeController extends Controller
                 }
             }
         }
-
         $request->session()->put('cart', $cart);
-        return view('cart');
+        $cart = session()->get('cart');
+        if ($cart) {
+            foreach ($cart as $key => $product) {
+                $cart[$key]['product'] = Product::find($product['productId'])->only(['title', 'price', 'quantity']);
+            }
+        }
+        return response()->json($cart);
+        // return view('cart');
     }
 }

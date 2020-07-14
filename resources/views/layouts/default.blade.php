@@ -37,6 +37,19 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav mt-2 mt-lg-0">
+                    @if (Request::path() != 'summary')
+                        <li class="nav-item active">
+                            <button type="submit" id="cart-button" class="btn btn-primary">
+                                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i> 
+                                Twój koszyk
+                                <span class="badge badge-pill badge-success" id="cart-badge" style="display: none;">
+                                    @if (!empty($cart))
+                                        {{ count($cart) }}
+                                    @endif
+                                </span>
+                            </button>
+                        </li>    
+                    @endif
                     @guest
                         <li class="nav-item active">
                             <a class="nav-link" href="{{ route('login') }}"><i class="fa fa-user mr-2" aria-hidden="true"></i>Zaloguj się</a>
@@ -46,18 +59,8 @@
                         </li>
                     @else
                         <li class="nav-item active">
-                            <button type="submit" id="cart-button" class="btn btn-primary">
-                                <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i> 
-                                Twój koszyk
-                                <span class="badge badge-pill badge-success" id="cart-badge" style="display: none;">
-                                    @if (isset($cart) && $cart != [])
-                                        {{ count($cart) }}
-                                    @endif
-                                </span>
-                            </button>
-                        </li>    
-                        <li class="nav-item active">
                             <form class="form-inline" method="POST" action="{{ route("logout") }}">
+                                @csrf
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-key" aria-hidden="true"></i> Wyloguj się</button>
                             </form>
                         </li>
@@ -65,8 +68,11 @@
                 </ul>                
             </div>
         </nav>
-        @include('cart')
+        @if (!Request::is('summary'))
+            @include('cart')
+        @endif
         @yield('content')
+        
     </div>
 </body>
 </html>

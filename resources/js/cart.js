@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     function sendData() {
         var products = [];
-        $("#cart .product").each(function () {
+        $(".product").each(function () {
             products.push({ 
                 "productId": $(this).data("product-id"),
                 "quantity": parseInt($(this).find('.product-quantity').val(), 10)
@@ -22,34 +22,111 @@ $(document).ready(function () {
             type: "post",
             url: '/add_to_cart',
             data: JSON.stringify(products),
-            dataType: 'text',
+            dataType: 'json',
             contentType: 'application/json',
             success: function(data)
             {
-                $('#cart').replaceWith(data);
-                $('#cart').show();
-                calculateSum();
+                if ($('#cart').length > 0) refreshCart(data);
+                if ($('#summary').length > 0) refreshSummary(data);
             }
         });
     }
 
     function calculateSum() {
-        if ($("#cart .product").length > 0) {
+        if ($(".product").length > 0) {
             var sum = 0;
             $(".product").each(function () {
                 sum += parseInt($(this).data("price"), 10) * parseInt($(this).find(".product-quantity").val(), 10);
             });
             $("#product-summary").text(sum + " zł");
             $("#cart-badge").show();
-            $("#cart-badge").text($("#cart .product").length);
+            $("#cart-badge").text($("#cart, #summary .product").length);
         } else {
             $("#cart-badge").hide();
         }
     }
 
+    function refreshSummary(data) {
+        var html = `<tbody class="summary-content">`;
+        data.forEach(product => {
+            html += `<tr class="border-bottom product" data-product-id="${ product.productId }" data-price="${ product.product.price }}" data-quantity="${ product.product.quantity }">
+            <td scope="row">
+                <div class="d-flex">
+                    <img src="https://via.placeholder.com/100x100" class="img-fluid rounded mr-3" style="min-width: 100px">
+                    <div class="d-flex flex-column justify-content-between align-items-start">
+                        <h5>${ product.product.title }</h5>
+                        <button type="button" class="btn btn-sm btn-light product-delete">
+                            <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <p class="text-center text-nowrap product-single-price">${ product.product.price } zł</p>
+            </td>
+            <td>
+            <div class="btn-group w-50" role="group">
+            <button type="button" class="btn btn-sm btn-outline-info product-minus" ${ (product.quantity <= 1) ? 'disabled' : '' }>
+                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+            </button>
+            <input type="text" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="${ product.quantity }" readonly>
+            <button type="button" class="btn btn-sm btn-outline-info product-plus" ${ (product.quantity >= product.product.quantity) ? 'disabled' : '' }>
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </button>
+            </div>
+            </td>
+            <td class="text-center text-nowrap font-weight-bold product-price">
+                ${ product.product.price * product.quantity } zł
+            </td>
+            </tr>`;
+        });
+        html += `</tbody>`;
+        $('#summary .summary-content').replaceWith(html);
+        calculateSum();
+    }
+
+    function refreshCart(data) {
+        var html = `<div class="cart-content">`;
+        data.forEach(product => {
+            html += `<div class="card-text d-flex align-items-center pb-3 border-bottom product mt-1" data-product-id="${ product.productId }" data-price="${ product.product.price }" data-quantity="${ product.product.quantity }">
+            <div class="pl-1 mr-2 pt-1">
+                <button type="button" class="btn btn-outline product-delete">
+                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div>
+                <p class="m-0 font-weight-bold">${ product.product.title }</p>
+                <div class="btn-group w-50" role="group">
+                    <button type="button" class="btn btn-sm btn-outline-info product-minus" ${ (product.quantity <= 1) ? 'disabled' : '' }>
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </button>
+                    <input type="text" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="${ product.quantity }" readonly>
+                    <button type="button" class="btn btn-sm btn-outline-info product-plus" ${ (product.quantity >= product.product.quantity) ? 'disabled' : '' }>
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="text-center mr-3 ml-auto font-weight-bold text-nowrap product-price">
+                ${ product.product.price * product.quantity } zł
+            </div>
+            </div>`;
+        });
+        html += `</div>`;
+        $('#cart .cart-content').replaceWith(html);
+        $('#cart').show();
+        if (data.length > 0) {
+            $('#cart .cart-summary').show();
+            $('#cart .cart-empty').hide();
+        } else {
+            $('#cart .cart-summary').hide();
+            $('#cart .cart-empty').show();
+        }
+        calculateSum();
+    }
+
     calculateSum();
 
-    $("body").on('click', '#cart .product-plus', function() {
+    $("body").on('click', '.product-plus', function() {
         $(this).siblings('.product-quantity').val(function (i, oldval) {
             if (parseInt( oldval, 10) < $(this).parents(".product").data("quantity")) {
                 clearTimeout(debounce);
@@ -61,7 +138,7 @@ $(document).ready(function () {
         }).change();
     });
 
-    $("body").on('click', '#cart .product-minus', function() {
+    $("body").on('click', '.product-minus', function() {
         $(this).siblings('.product-quantity').val(function (i, oldval) {
             if (parseInt( oldval, 10) > 1) {
                 clearTimeout(debounce);
@@ -73,14 +150,14 @@ $(document).ready(function () {
         }).change();
     });
 
-    $("body").on('click', '#cart .product-delete', function () {
+    $("body").on('click', '.product-delete', function () {
         $(this).parents('.product').fadeOut(400, function() {
             $(this).remove(); 
             sendData();
         });
     });
 
-    $("#cart .product-quantity").change(function() {
+    $(".product-quantity").change(function() {
         $(this).parent().parent().siblings(".product-price").text(parseInt($(this).parents(".product").data("price"),10) * parseInt($(this).val(), 10) + ' zł');
         calculateSum();
     });
@@ -93,9 +170,8 @@ $(document).ready(function () {
             data: $(this).serialize(),
             success: function(data)
             {
-                $('#cart').replaceWith(data);
-                $('#cart').show();
-                calculateSum();
+                if ($('#cart').length > 0) refreshCart(data);
+                // if ($('#summary').length > 0) refreshSummary(data);
             }
         });
     });
