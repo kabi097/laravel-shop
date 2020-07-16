@@ -40,7 +40,12 @@ $(document).ready(function () {
             });
             $("#product-summary").text(sum + " zł");
             $("#cart-badge").show();
-            $("#cart-badge").text($("#cart, #summary .product").length);
+            $("#cart-badge").text($(".product").length);
+            $('#summary-price').text(sum + " zł");
+            $("#summary-quantity").text($(".product").length);
+            if ($("#summary-payment").length > 0) { 
+                $('#summary-payment').text($('input[type=radio][name=payment]:checked').parent().text().trim());
+            }
         } else {
             $("#cart-badge").hide();
         }
@@ -159,6 +164,10 @@ $(document).ready(function () {
 
     $(".product-quantity").change(function() {
         $(this).parent().parent().siblings(".product-price").text(parseInt($(this).parents(".product").data("price"),10) * parseInt($(this).val(), 10) + ' zł');
+        calculateSum();
+    });
+
+    $('.payment-method').change(function () {
         calculateSum();
     });
 

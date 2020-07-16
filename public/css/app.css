@@ -13981,3 +13981,17 @@ a.text-dark:focus {
   z-index: 1000;
 }
 
+.payment-method {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.payment-method input[type=radio] {
+  opacity: 0.01;
+  z-index: 100;
+}
+
