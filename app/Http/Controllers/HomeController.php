@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Order;
 use App\Product;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -100,5 +102,39 @@ class HomeController extends Controller
         }
         return response()->json($cart);
         // return view('cart');
+    }
+
+    public function checkout(Request $request) {
+        $validatedData = Validator::make($request->all(), [
+            'products.*' => 'required|array',
+            'products.*.id' => 'required|distinct|exists:products,id',
+            'products.*.quantity' => 'required|integer|gt:0|maxquantity:products.*.id',
+            'first_name' => 'required|string|min:2',
+            'last_name' => 'required|string|min:2',
+            'street' => 'required|string',
+            'city' => 'required|string',
+            'postal_code' => 'required|regex:/^\d{2}-\d{3}$/',
+            'phone_number' => 'required',
+            'email' => 'required|email',
+            'nip' => 'integer',
+            'payment' => 'in:card,paypal,payu'
+        ])->validate();
+        
+        $order = new Order();
+        $order->first_name = $validatedData['first_name'];
+        $order->last_name = $validatedData['last_name'];
+        $order->street = $validatedData['street'];
+        $order->city = $validatedData['city'];
+        $order->postal_code = $validatedData['postal_code'];
+        $order->phone_number = $validatedData['phone_number'];
+        $order->email = $validatedData['email'];
+        $order->nip = $validatedData['nip'];
+        // $order->payment = $validatedData['payment'];
+        // $order->user_id = User::all()->first()->id;
+        $order->user()->associate(User::all()->first());
+        
+        $order->save();
+
+
     }
 }

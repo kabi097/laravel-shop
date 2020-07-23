@@ -53,8 +53,9 @@ $(document).ready(function () {
 
     function refreshSummary(data) {
         var html = `<tbody class="summary-content">`;
-        data.forEach(product => {
-            html += `<tr class="border-bottom product" data-product-id="${ product.productId }" data-price="${ product.product.price }}" data-quantity="${ product.product.quantity }">
+        data.forEach((product, index) => {
+            html += `<input type="hidden" name="products[${ index }][id]" value="${ product.productId }">
+            <tr class="border-bottom product" data-product-id="${ product.productId }" data-price="${ product.product.price }}" data-quantity="${ product.product.quantity }">
             <td scope="row">
                 <div class="d-flex">
                     <img src="https://via.placeholder.com/100x100" class="img-fluid rounded mr-3" style="min-width: 100px">
@@ -74,7 +75,7 @@ $(document).ready(function () {
             <button type="button" class="btn btn-sm btn-outline-info product-minus" ${ (product.quantity <= 1) ? 'disabled' : '' }>
                 <i class="fa fa-minus-circle" aria-hidden="true"></i>
             </button>
-            <input type="text" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="${ product.quantity }" readonly>
+            <input type="text" name="products[${ index }][quantity]" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="${ product.quantity }" readonly>
             <button type="button" class="btn btn-sm btn-outline-info product-plus" ${ (product.quantity >= product.product.quantity) ? 'disabled' : '' }>
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
             </button>
