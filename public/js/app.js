@@ -37336,13 +37336,22 @@ $(document).ready(function () {
   }
 
   function refreshSummary(data) {
-    var html = "<tbody class=\"summary-content\">";
-    data.forEach(function (product, index) {
-      html += "<input type=\"hidden\" name=\"products[".concat(index, "][id]\" value=\"").concat(product.productId, "\">\n            <tr class=\"border-bottom product\" data-product-id=\"").concat(product.productId, "\" data-price=\"").concat(product.product.price, "}\" data-quantity=\"").concat(product.product.quantity, "\">\n            <td scope=\"row\">\n                <div class=\"d-flex\">\n                    <img src=\"https://via.placeholder.com/100x100\" class=\"img-fluid rounded mr-3\" style=\"min-width: 100px\">\n                    <div class=\"d-flex flex-column justify-content-between align-items-start\">\n                        <h5>").concat(product.product.title, "</h5>\n                        <button type=\"button\" class=\"btn btn-sm btn-light product-delete\">\n                            <i class=\"fa fa-trash text-danger\" aria-hidden=\"true\"></i>\n                        </button>\n                    </div>\n                </div>\n            </td>\n            <td>\n                <p class=\"text-center text-nowrap product-single-price\">").concat(product.product.price, " z\u0142</p>\n            </td>\n            <td>\n            <div class=\"btn-group w-50\" role=\"group\">\n            <button type=\"button\" class=\"btn btn-sm btn-outline-info product-minus\" ").concat(product.quantity <= 1 ? 'disabled' : '', ">\n                <i class=\"fa fa-minus-circle\" aria-hidden=\"true\"></i>\n            </button>\n            <input type=\"text\" name=\"products[").concat(index, "][quantity]\" class=\"form-control w-50 form-control-sm product-quantity\" placeholder=\"Ilo\u015B\u0107\" aria-label=\"Ilo\u015B\u0107\" aria-describedby=\"btnGroupAddon\" value=\"").concat(product.quantity, "\" readonly>\n            <button type=\"button\" class=\"btn btn-sm btn-outline-info product-plus\" ").concat(product.quantity >= product.product.quantity ? 'disabled' : '', ">\n                <i class=\"fa fa-plus-circle\" aria-hidden=\"true\"></i>\n            </button>\n            </div>\n            </td>\n            <td class=\"text-center text-nowrap font-weight-bold product-price\">\n                ").concat(product.product.price * product.quantity, " z\u0142\n            </td>\n            </tr>");
-    });
-    html += "</tbody>";
-    $('#summary .summary-content').replaceWith(html);
-    calculateSum();
+    if (data.length > 0) {
+      var html = "<tbody class=\"summary-content\">";
+      data.forEach(function (product, index) {
+        html += "<input type=\"hidden\" name=\"products[".concat(index, "][id]\" value=\"").concat(product.productId, "\">\n                <tr class=\"border-bottom product\" data-product-id=\"").concat(product.productId, "\" data-price=\"").concat(product.product.price, "}\" data-quantity=\"").concat(product.product.quantity, "\">\n                <td scope=\"row\">\n                    <div class=\"d-flex\">\n                        <img src=\"https://via.placeholder.com/100x100\" class=\"img-fluid rounded mr-3\" style=\"min-width: 100px\">\n                        <div class=\"d-flex flex-column justify-content-between align-items-start\">\n                            <h5>").concat(product.product.title, "</h5>\n                            <button type=\"button\" class=\"btn btn-sm btn-light product-delete\">\n                                <i class=\"fa fa-trash text-danger\" aria-hidden=\"true\"></i>\n                            </button>\n                        </div>\n                    </div>\n                </td>\n                <td>\n                    <p class=\"text-center text-nowrap product-single-price\">").concat(product.product.price, " z\u0142</p>\n                </td>\n                <td>\n                <div class=\"btn-group w-50\" role=\"group\">\n                <button type=\"button\" class=\"btn btn-sm btn-outline-info product-minus\" ").concat(product.quantity <= 1 ? 'disabled' : '', ">\n                    <i class=\"fa fa-minus-circle\" aria-hidden=\"true\"></i>\n                </button>\n                <input type=\"text\" name=\"products[").concat(index, "][quantity]\" class=\"form-control w-50 form-control-sm product-quantity\" placeholder=\"Ilo\u015B\u0107\" aria-label=\"Ilo\u015B\u0107\" aria-describedby=\"btnGroupAddon\" value=\"").concat(product.quantity, "\" readonly>\n                <button type=\"button\" class=\"btn btn-sm btn-outline-info product-plus\" ").concat(product.quantity >= product.product.quantity ? 'disabled' : '', ">\n                    <i class=\"fa fa-plus-circle\" aria-hidden=\"true\"></i>\n                </button>\n                </div>\n                </td>\n                <td class=\"text-center text-nowrap font-weight-bold product-price\">\n                    ").concat(product.product.price * product.quantity, " z\u0142\n                </td>\n                </tr>");
+      });
+      html += "</tbody>";
+      $('#summary .summary-content').replaceWith(html);
+      calculateSum();
+    } else {
+      $('#product-table').hide();
+      $("#product-summary").parent().hide();
+      $("#product-delivery").hide();
+      $("#product-summary-table table").hide();
+      $("#product-summary-table button").prop('disabled', true);
+      $("#summary .card-body").append('<h4 class="p-4 text-center">Brak produktów w koszyku</h4>');
+    }
   }
 
   function refreshCart(data) {
