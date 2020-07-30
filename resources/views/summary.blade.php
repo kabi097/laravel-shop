@@ -172,7 +172,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Metoda płatności</td>
-                                                <td class="font-weight-bold text-nowrap" id="summary-payment"></td>
+                                                <td class="font-weight-bold" id="summary-payment"></td>
                                             </tr>
                                         </table>
                                     @endif
