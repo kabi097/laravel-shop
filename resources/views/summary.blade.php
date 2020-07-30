@@ -21,45 +21,48 @@
                                     </tr>
                                 </thead>
                                 <tbody class="summary-content">
-                            @foreach ($cart as $key => $product)
-                                <input type="hidden" name="products[{{ $key }}][id]" value="{{ $product['productId'] }}">
-                                <tr class="border-bottom product" data-product-id="{{ $product['productId'] }}" data-price="{{ $product['product']->price }}" data-quantity="{{ $product['product']->quantity }}">
-                                    <td scope="row">
-                                        <div class="d-flex">
-                                            <img src="https://via.placeholder.com/100x100" class="img-fluid rounded mr-3" style="min-width: 100px">
-                                            <div class="d-flex flex-column justify-content-between align-items-start">
-                                                <h5>{{ $product['product']->title }}</h5>
-                                                <button type="button" class="btn btn-sm btn-light product-delete">
-                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                @foreach ($cart as $key => $product)
+                                    <input type="hidden" name="products[{{ $key }}][id]" value="{{ $product['productId'] }}">
+                                    <tr class="border-bottom product" data-product-id="{{ $product['productId'] }}" data-price="{{ $product['product']->price }}" data-quantity="{{ $product['product']->quantity }}">
+                                        <td scope="row">
+                                            <div class="d-flex">
+                                                <img src="https://via.placeholder.com/100x100" class="img-fluid rounded mr-3" style="min-width: 100px">
+                                                <div class="d-flex flex-column justify-content-between align-items-start">
+                                                    <h5>{{ $product['product']->title }}</h5>
+                                                    <button type="button" class="btn btn-sm btn-light product-delete">
+                                                        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="text-center text-nowrap product-single-price">{{ $product['product']->price }} zł</p>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group w-50" role="group">
+                                                <button type="button" class="btn btn-sm btn-outline-info product-minus" @if($product['quantity']<=1) disabled @endif>
+                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                </button>
+                                                <input type="text" name="products[{{ $key }}][quantity]" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="{{ $product['quantity'] }}" readonly>
+                                                <button type="button" class="btn btn-sm btn-outline-info product-plus" @if($product['quantity']>=$product['product']->quantity) disabled @endif>
+                                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                                 </button>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-center text-nowrap product-single-price">{{ $product['product']->price }} zł</p>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group w-50" role="group">
-                                            <button type="button" class="btn btn-sm btn-outline-info product-minus" @if($product['quantity']<=1) disabled @endif>
-                                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
-                                            </button>
-                                            <input type="text" name="products[{{ $key }}][quantity]" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="{{ $product['quantity'] }}" readonly>
-                                            <button type="button" class="btn btn-sm btn-outline-info product-plus" @if($product['quantity']>=$product['product']->quantity) disabled @endif>
-                                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="text-center text-nowrap font-weight-bold product-price">
-                                        {{ $product['product']->price * $product['quantity']}} zł
-                                    </td>
-                                </tr>
-                            @endforeach
+                                        </td>
+                                        <td class="text-center text-nowrap font-weight-bold product-price">
+                                            {{ $product['product']->price * $product['quantity']}} zł
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                             <h4 class="float-right">
                                 Razem: <span id="product-summary"></span>
                             </h4>
                             @endif
+                            @error('products.*')
+                                <span role="alert" class="form-text text-danger">{{ $message }}</span>
+                            @enderror
                             </div>
                         </div>
                         <div class="card my-3">

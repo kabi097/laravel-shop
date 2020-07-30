@@ -120,21 +120,15 @@ class HomeController extends Controller
             'payment' => 'in:card,paypal,payu'
         ])->validate();
         
-        $order = new Order();
-        $order->first_name = $validatedData['first_name'];
-        $order->last_name = $validatedData['last_name'];
-        $order->street = $validatedData['street'];
-        $order->city = $validatedData['city'];
-        $order->postal_code = $validatedData['postal_code'];
-        $order->phone_number = $validatedData['phone_number'];
-        $order->email = $validatedData['email'];
-        $order->nip = $validatedData['nip'];
+        $order = new Order($validatedData);
         // $order->payment = $validatedData['payment'];
         // $order->user_id = User::all()->first()->id;
         $order->user()->associate(User::all()->first());
-        
         $order->save();
-
-
+        foreach($validatedData["products"] as $product) {
+            $order->products()->attach($product['id'], ['quantity' => $product['quantity']]);
+            Product::find($product['id'])->decrement('quantity', $product['quantity']);
+        }
+        $request->session()->put('cart', []);
     }
 }
