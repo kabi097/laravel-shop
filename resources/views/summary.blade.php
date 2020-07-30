@@ -130,15 +130,15 @@
                                             <label for="payment" class="font-weight-bold d-block">Płatność</label>
                                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                                 <label class="btn btn-primary payment-method {{ old('payment') ? 'active' : '' }} @if (!$errors->any()) 'active' @endif">
-                                                    <input type="radio" name="payment" value="card" autocomplete="off" {{ old('payment') ? 'checked' : '' }}>
+                                                    <input type="radio" name="payment" value="card" autocomplete="off" {{ old('payment')=="card" ? 'checked' : '' }}{{ old('payment')==null ? 'checked' : '' }}>
                                                     MasterCard / Visa
                                                 </label>
                                                 <label class="btn btn-primary payment-method {{ old('payment') ? 'active' : '' }}">
-                                                    <input type="radio" name="payment" value="paypal" autocomplete="off" {{ old('payment') ? 'checked' : '' }}>
+                                                    <input type="radio" name="payment" value="paypal" autocomplete="off" {{ old('payment')=="paypal" ? 'checked' : '' }}>
                                                     PayPal
                                                 </label>
                                                 <label class="btn btn-primary payment-method {{ old('payment') ? 'active' : '' }}">
-                                                    <input type="radio" name="payment" value="payu" autocomplete="off" {{ old('payment') ? 'checked' : '' }}>
+                                                    <input type="radio" name="payment" value="payu" autocomplete="off" {{ old('payment')=="payu" ? 'checked' : '' }}>
                                                     PayU
                                                 </label>
                                             </div>

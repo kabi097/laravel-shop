@@ -122,7 +122,6 @@ class HomeController extends Controller
         
         $order = new Order($validatedData);
         // $order->payment = $validatedData['payment'];
-        // $order->user_id = User::all()->first()->id;
         $order->user()->associate(User::all()->first());
         $order->save();
         foreach($validatedData["products"] as $product) {
