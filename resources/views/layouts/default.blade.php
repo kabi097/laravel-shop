@@ -21,15 +21,17 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-            <a class="navbar-brand" href="{{ action("HomeController@index") }}">SkyShop</a>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-primary p-3">
+            <a class="navbar-brand" href="{{ action("HomeController@index") }}">
+                <img src="{{ asset('laravel_icon.png') }}">
+                {{ config('app.name', 'Laravel') }}</a>
             <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
                 aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item {{ Request::is("/") ? 'active' : ''}}">
+                    <li class="nav-item {{ Request::is("/") ? 'active' : ''}}">
                         <a class="nav-link" href="{{ action("HomeController@index") }}">Strona główna</a>
                     </li>
                     <li class="nav-item {{ Request::is("products*") ? 'active' : ''}}">
