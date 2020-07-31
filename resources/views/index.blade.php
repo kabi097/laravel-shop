@@ -1,6 +1,16 @@
 @extends('layouts.default')
 
 @section('content')
+    @if ($success = Session::get('success'))
+        <div class="bg-success w-100 text-white">
+            <div class="text-right">
+                <i class="fa fa-times info-close pr-2 pt-2" style="cursor: pointer;" aria-hidden="true" onclick="$(this).parent().parent().remove();"></i>
+            </div>
+            <h3 class="text-center m-0 pb-5 pt-4">
+                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>{{ $success }}
+            </h3>
+        </div>
+    @endif
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-3">Witaj w naszym sklepie!</h1>

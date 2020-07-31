@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Events\OrderCompleted;
 use App\Order;
 use App\Product;
 use App\User;
@@ -122,12 +123,15 @@ class HomeController extends Controller
         
         $order = new Order($validatedData);
         // $order->payment = $validatedData['payment'];
-        $order->user()->associate(User::all()->first());
+        $order->user()->associate(auth()->user());
         $order->save();
         foreach($validatedData["products"] as $product) {
             $order->products()->attach($product['id'], ['quantity' => $product['quantity']]);
             Product::find($product['id'])->decrement('quantity', $product['quantity']);
         }
         $request->session()->put('cart', []);
+        $request->session()->flash('success', 'Pomyślnie dokonano zakupu.');
+        event(new OrderCompleted($order));
+        return redirect('/', 303);
     }
 }

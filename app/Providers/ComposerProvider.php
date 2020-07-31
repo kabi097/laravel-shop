@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Product;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,6 +38,7 @@ class ComposerProvider extends ServiceProvider
     
         view()->composer('*', function($view)
         {
+            $unreadMessages = (Auth::check()) ? auth()->user()->unreadNotifications : null;
             $cart = session()->get('cart');
             if ($cart) {
                 foreach ($cart as $key => $product) {
@@ -44,6 +46,7 @@ class ComposerProvider extends ServiceProvider
                 }
             }
             $view->with('cart', $cart);
+            $view->with('unreadMessages', $unreadMessages);
         });
     }
 }

@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-sm navbar-dark bg-primary p-3">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
             <a class="navbar-brand" href="{{ action("HomeController@index") }}">
                 <img src="{{ asset('laravel_icon.png') }}">
                 {{ config('app.name', 'Laravel') }}</a>
@@ -60,6 +60,15 @@
                             <a class="nav-link" href="{{ route('register') }}"><i class="fa fa-key mr-2" aria-hidden="true"></i>Zarejestruj się</a>
                         </li>
                     @else
+                        <li class="nav-item">
+                            <a id="messages-button" class="btn btn-primary" href="{{ route('messages') }}" role="button">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                Powiadomienia
+                                <span class="badge badge-pill badge-success" id="messages-badge" @if(count($unreadMessages)<1) style="display: none;" @endif }}>
+                                    {{ count($unreadMessages) }}
+                                </span>                            
+                            </a>
+                        </li>    
                         <li class="nav-item active">
                             <form class="form-inline" method="POST" action="{{ route("logout") }}">
                                 @csrf

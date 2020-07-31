@@ -18,10 +18,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/products/{category?}', 'HomeController@products')->name('products');
 Route::get('/product/{product?}', 'HomeController@product')->name('product');
-Route::get('/summary', 'HomeController@summary')->name('summary');
+Route::get('/summary', 'HomeController@summary')->name('summary')->middleware('auth');
 Route::post('/add_to_cart', 'HomeController@add_to_cart')->name('add_to_cart');
-Route::post('/checkout', 'HomeController@checkout')->name('checkout');
-
-Route::get('refresh-csrf', function(){
-    return csrf_token();
-});
+Route::post('/checkout', 'HomeController@checkout')->name('checkout')->middleware('auth');
+Route::get('/messages/{selected?}', 'NotificationController@messages')->name('messages');
