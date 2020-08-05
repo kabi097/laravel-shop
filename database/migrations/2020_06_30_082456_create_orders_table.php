@@ -42,6 +42,9 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('order_product');
         Schema::dropIfExists('orders');
+        Schema::enableForeignKeyConstraints();
     }
 }
