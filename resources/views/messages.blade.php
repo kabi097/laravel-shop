@@ -13,7 +13,7 @@
         <div class="card">
             <div class="card-body pl-3 pr-3 pt-0" style="min-height: 60vh;">
                 <div class="row h-100">
-                    @if(!empty($messages))
+                    @if(!$messages->isEmpty())
                         <div class="col-12 col-md-4 h-100 border-right">
                             @foreach ($messages as $index => $message)
                                 <div class="row align-items-center h-100 bg-light py-2 border-bottom" style="height: 100px; max-height: 100px;">                                    
@@ -46,6 +46,8 @@
                             <hr />
                             {{ ($selected) ? $messages[$selected]->data['content'] : $messages[0]->data['content']}}
                         </div>
+                    @else
+                        <h2 class="text-center p-4 mt-3 w-100">Nie masz żadnych powiadomień</h2>
                     @endif
                 </div>
             </div>
