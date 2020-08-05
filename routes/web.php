@@ -22,3 +22,7 @@ Route::get('/summary', 'HomeController@summary')->name('summary')->middleware('a
 Route::post('/add_to_cart', 'HomeController@add_to_cart')->name('add_to_cart');
 Route::post('/checkout', 'HomeController@checkout')->name('checkout')->middleware('auth');
 Route::get('/messages/{selected?}', 'NotificationController@messages')->name('messages');
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
