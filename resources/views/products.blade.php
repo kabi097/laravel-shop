@@ -17,7 +17,11 @@
                     @foreach ($products as $product)
                         <div class="col-12 col-md-4 mb-4">
                             <div class="card text-left h-100">
-                                <img class="card-img-top" src="https://via.placeholder.com/250x150">
+                                @if(json_decode($product->images))
+                                    <img src="{{ Voyager::image($product->getThumbnail(json_decode($product->images)[0], 'cropped')) }}">
+                                @else 
+                                    <img class="card-img-top" src="https://via.placeholder.com/300x220">
+                                @endif
                                 <div class="card-body d-flex flex-column">
                                     <h4 class="card-title"><a class="text-body" href="{{ action("HomeController@product", $product) }}">{{ $product->title }}</a></h4>
                                     <h6 class="card-subtitle text-muted mb-1"><a href="{{ action('HomeController@products', $product->category) }}">{{ $product->category->name }}</a></h6>
