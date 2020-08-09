@@ -14011,17 +14011,28 @@ a.text-dark:focus {
   height: 100%;
 }
 
-.product-gallery .image-previous {
+.product-gallery .image-previous,
+.product-gallery .image-next {
   position: fixed;
-  top: 50%;
-  left: 5%;
+  top: 0;
+  height: 100%;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
+.product-gallery .image-previous:hover,
+.product-gallery .image-next:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.product-gallery .image-previous {
+  left: 0;
+}
+
 .product-gallery .image-next {
-  position: fixed;
-  top: 50%;
-  right: 5%;
-  cursor: pointer;
+  right: 0;
 }
 
