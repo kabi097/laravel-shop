@@ -37499,10 +37499,14 @@ function checkNavigation() {
 
   if (foundIndex <= 0) {
     $('.image-previous').hide();
+  } else {
+    $('.image-previous').show();
   }
 
   if (foundIndex >= $('.product-gallery .product-thumbnail').length - 1) {
     $('.image-next').hide();
+  } else {
+    $('.image-next').show();
   }
 
   return foundIndex;
