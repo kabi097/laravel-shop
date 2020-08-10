@@ -23,6 +23,7 @@
     </div>
     <div class="py-5 bg-light">
         <div class="container">
+            <h4 class="mb-3">Ostatnio dodane</h4>
             <div class="row align-items-stretch">
                 @foreach ($products as $product)
                     <div class="col-12 col-md-4 mb-4">
