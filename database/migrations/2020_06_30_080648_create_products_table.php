@@ -20,6 +20,8 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->integer('quantity')->default(1);
             $table->json('images')->nullable();
+            $table->date('date');
+            $table->boolean('featured')->default(false);
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
