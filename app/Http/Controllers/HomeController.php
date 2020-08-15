@@ -34,6 +34,7 @@ class HomeController extends Controller
         $closestProducts = Product::all()->sortByDesc('date')->take(6);
         $featuredProducts = Product::where(['featured' => true])->get();
         return view('index', [
+            'title' => 'Strona główna',
             'lastProducts' => $lastProducts,
             'closestProducts' => $closestProducts,
             'featuredProducts' => $featuredProducts
@@ -43,17 +44,27 @@ class HomeController extends Controller
     public function products(Category $category = null) {
         $products = $category==null ? Product::paginate(20) : Product::where(['category_id' => $category->id])->paginate(20);
 
-        return view('products', ['products' => $products, 'category' => $category]);
+        return view('products', [
+            'products' => $products, 
+            'category' => $category,
+            'title' => ($category) ? 'Produkty - '.$category->name : 'Produkty'
+        ]);
     }
 
     public function product(Product $product) {
-        return view('product', ['product' => $product]);
+        return view('product', [
+            'title' => $product->title,
+            'product' => $product
+        ]);
     }
 
     public function summary(Request $request) {
         $cart = $request->session()->get('cart');
         if (!$cart) redirect('/');
-        return view('summary', ['cart' => $cart]);
+        return view('summary', [
+            'title' => 'Twój koszyk',
+            'cart' => $cart
+        ]);
     }
 
     public function add_to_cart(Request $request) {
