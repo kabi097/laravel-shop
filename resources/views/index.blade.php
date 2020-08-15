@@ -65,6 +65,29 @@
                     @endforeach
                 <a class="btn btn-primary mx-auto mt-4" href="{{ route('products') }}" role="button">Zobacz więcej</a>
             </div>
+            <h4 class="mb-3">Najbliższe wydarzenia</h4>
+            <div class="row justify-content-center align-content-center">
+                @foreach ($closestProducts as $product)
+                        <div class="col-12 col-md-4 mb-4">
+                            <div class="card text-left h-100 mx-2">
+                                @if(json_decode($product->images))
+                                    <img src="{{ Voyager::image($product->getThumbnail(json_decode($product->images)[0], 'cropped')) }}">
+                                @else 
+                                    <img class="card-img-top" src="https://via.placeholder.com/300x220">
+                                @endif
+                                <div class="card-body d-flex flex-column">
+                                    <h4 class="card-title"><a class="text-body" href="{{ action("HomeController@product", $product) }}">{{ $product->title }}</a></h4>
+                                    <h6 class="card-subtitle text-muted mb-1"><a href="{{ action('HomeController@products', $product->category) }}">{{ $product->category->name }}</a></h6>
+                                    <p class="card-text text-justify">{{ Str::substr($product->description, 0, 50)."..." }}</p>
+                                    <div class="mt-auto">
+                                        <a href="{{ action("HomeController@product", $product) }}" class="btn btn-outline-primary float-right self-align-end">Cena: {{ $product->price }} zł</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                <a class="btn btn-primary mx-auto mt-4" href="{{ route('products') }}" role="button">Zobacz więcej</a>
+            </div>
         </div>
     </div>
 @endsection
