@@ -32,7 +32,7 @@ class HomeController extends Controller
     {
         $lastProducts = Product::all()->take(6);
         $closestProducts = Product::all()->sortByDesc('date')->take(6);
-        $featuredProducts = Product::where(['featured' => true])->get();
+        $featuredProducts = Product::where(['featured' => true])->limit(10)->get();
         return view('index', [
             'title' => 'Strona główna',
             'lastProducts' => $lastProducts,

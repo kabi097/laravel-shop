@@ -11,35 +11,41 @@
             </h3>
         </div>
     @endif
-    <div id="carouselProduct" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-            @foreach ($featuredProducts as $key => $featuredProduct)
-                <li data-target="#carouselProduct" data-slide-to="{{ $key }}" class="{{ ($key==0) ? 'active' : ''}}"></li>
-            @endforeach
-        </ol>
-        <div class="carousel-inner">
-            @foreach ($featuredProducts as $key => $featuredProduct)
-                <div class="carousel-item {{ ($key==0) ? 'active' : ''}}">
-                    <div class="product-image-carousel" style="background-image: url({{ asset('storage/'.json_decode($featuredProduct->images)[0]) }})"> </div>
-                    <div class="carousel-caption d-md-block">
-                        <a href="{{ route("product", ['product' => $featuredProduct->id]) }}" class="text-white text-decoration-none">
-                            <h4 class="font-weight-bold">{{ $featuredProduct->title }}</h4>
-                            <h5>Cena: <strong>{{ $featuredProduct->price }} zł</strong></h5>
-                            <p>{{ substr($featuredProduct->description, 0, 200) }}...</p>
-                        </a>
+    @if ($featuredProducts && count($featuredProducts)>0)
+        <div id="carouselProduct" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                @foreach ($featuredProducts as $key => $featuredProduct)
+                    @if($featuredProduct->images)
+                        <li data-target="#carouselProduct" data-slide-to="{{ $key }}" class="{{ ($key==0) ? 'active' : ''}}"></li>
+                    @endif
+                @endforeach
+            </ol>
+            <div class="carousel-inner">
+                @foreach ($featuredProducts as $key => $featuredProduct)
+                    @if($featuredProduct->images)
+                    <div class="carousel-item {{ ($key==0) ? 'active' : ''}}">
+                        <div class="product-image-carousel" style="background-image: url({{ asset('storage/'.json_decode($featuredProduct->images)[0]) }})"> </div>
+                        <div class="carousel-caption d-md-block">
+                            <a href="{{ route("product", ['product' => $featuredProduct->id]) }}" class="text-white text-decoration-none">
+                                <h4 class="font-weight-bold">{{ $featuredProduct->title }}</h4>
+                                <h5>Cena: <strong>{{ $featuredProduct->price }} zł</strong></h5>
+                                <p>{{ substr($featuredProduct->description, 0, 200) }}...</p>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                    @endif
+                @endforeach
+            </div>
+            <a class="carousel-control-prev" href="#carouselProduct" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselProduct" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
-        <a class="carousel-control-prev" href="#carouselProduct" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselProduct" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
+    @endif
     <div class="py-5 bg-light">
         <div class="container">
             <h4 class="mb-3">Ostatnio dodane</h4>
