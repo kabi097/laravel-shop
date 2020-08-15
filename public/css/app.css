@@ -13973,12 +13973,19 @@ a.text-dark:focus {
 }
 
 #cart {
-  position: absolute;
-  top: 65px;
-  right: 15px;
+  position: fixed;
+  top: 70px;
   width: 25rem;
   min-height: 120px;
   z-index: 1000;
+}
+
+.product-image-carousel {
+  height: 50vh;
+  width: auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .product-gallery .product-image {
