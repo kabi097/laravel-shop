@@ -30,9 +30,14 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::all()->take(6);
-
-        return view('index', ['products' => $products]);
+        $lastProducts = Product::all()->take(6);
+        $closestProducts = Product::all()->sortByDesc('date')->take(6);
+        $featuredProducts = Product::where(['featured' => true])->get();
+        return view('index', [
+            'lastProducts' => $lastProducts,
+            'closestProducts' => $closestProducts,
+            'featuredProducts' => $featuredProducts
+        ]);
     }
 
     public function products(Category $category = null) {
