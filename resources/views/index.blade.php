@@ -22,9 +22,11 @@
                 <div class="carousel-item {{ ($key==0) ? 'active' : ''}}">
                     <div class="product-image-carousel" style="background-image: url({{ asset('storage/'.json_decode($featuredProduct->images)[0]) }})"> </div>
                     <div class="carousel-caption d-md-block">
-                        <h4>{{ $featuredProduct->title }}</h4>
-                        <h5>Cena: <strong>{{ $featuredProduct->price }} zł</strong></h5>
-                        <p>{{ substr($featuredProduct->description, 0, 200) }}</p>
+                        <a href="{{ route("product", ['product' => $featuredProduct->id]) }}" class="text-white text-decoration-none">
+                            <h4 class="font-weight-bold">{{ $featuredProduct->title }}</h4>
+                            <h5>Cena: <strong>{{ $featuredProduct->price }} zł</strong></h5>
+                            <p>{{ substr($featuredProduct->description, 0, 200) }}...</p>
+                        </a>
                     </div>
                 </div>
             @endforeach
