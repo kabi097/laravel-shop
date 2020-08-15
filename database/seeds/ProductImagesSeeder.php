@@ -3,6 +3,7 @@
 use App\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class ProductImagesSeeder extends Seeder
 {
@@ -25,7 +26,9 @@ class ProductImagesSeeder extends Seeder
 
     public function run()
     {
-        Product::all()->each(function (Product $product) {
+        $count = Product::count();
+        $output = new ConsoleOutput();
+        Product::all()->each(function (Product $product, $key) use ($count, $output) {
             $product->update([
                 'images' => json_encode([
                     $this->getImage(),
@@ -34,6 +37,7 @@ class ProductImagesSeeder extends Seeder
                     $this->getImage()
                 ])
             ]);
+            $output->writeln('Product ' . ($key+1) . '/' . $count . ' modified.');
         });
     }
 }

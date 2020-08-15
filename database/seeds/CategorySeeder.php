@@ -12,21 +12,7 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        $names = [
-            "Women's Fashion",
-            "Men's Fashion",
-            "Phones & Telecommunications",
-            "Computer",
-            "Consumer Electronics",
-            "Jewelry",
-            "Home",
-            "Bags",
-            "Toys",
-            "Outdoor Fun & Sports",
-            "Beauty, Health",
-            "Automobiles & Motorcycles",
-            "Home Improvement"
-        ];
+        $names = ["Teatr", "Koncerty", "W plenerze", "Kino", "Imprezy masowe"];
 
         collect($names)->each(function ($name) {
             $category = new Category();
