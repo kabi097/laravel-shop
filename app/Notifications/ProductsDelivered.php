@@ -13,6 +13,10 @@ class ProductsDelivered extends Notification
     use Queueable;
 
     public $order;
+    public $sum;
+    public $products;
+    public $count;
+    public $ticket;
 
     /**
      * Create a new notification instance.
@@ -22,6 +26,18 @@ class ProductsDelivered extends Notification
     public function __construct(Order $order)
     {
         $this->order = $order;
+        $this->sum = $this->order->products->reduce(function ($old, $product) {
+            return $old+$product->price*$product->pivot->quantity;
+        },0);
+        if ($this->count==1) {
+            $this->products = 'produkt';
+        } elseif ($this->count>4) {
+            $this->products = 'produktów';
+        } else {
+            $this->products = 'produkty';
+        }
+        $this->count = count($this->order->products);
+        $this->ticket = rand(10000000,99999999);    //Demo
     }
 
     /**
@@ -44,9 +60,12 @@ class ProductsDelivered extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Zakupiłeś ' . count($this->order->products) . ' produktów.')
+                    ->level('success')
+                    ->subject('Zakupiłeś ' . $this->count . ' ' . $this->products . ' o łącznej wartości ' . $this->sum . ' zł.')
+                    ->line('Zakupiłeś ' . $this->count . ' ' . $this->products . ' o łącznej wartości ' . $this->sum . ' zł. Sprawdź swoje zamówienie w tabeli. Poniżej znajduje się twój unikalny kod zamówienia.')
                     ->action('Kliknij tutaj, aby przejść do sklepu.', url('/'))
-                    ->greeting('Dziękujemy za zakupy w naszym sklepie!');
+                    ->greeting('Dziękujemy za zakupy w naszym sklepie!')
+                    ->markdown('mail.products.delivered', ['products' => $this->order['products'], 'ticket' => $this->ticket]);
     }
 
     /**
@@ -57,13 +76,12 @@ class ProductsDelivered extends Notification
      */
     public function toArray($notifiable)
     {
-        $count = count($this->order->products);
-        $sum = $this->order->products->reduce(function ($old, $product) {
-            return $old+$product->price*$product->pivot->quantity;
-        },0);
         return [
-            "title" => "Twoje zamówienie zostało zrealizowane.",
-            "content" => 'Zakupiłeś ' . $count . ' produktów o łącznej wartości ' . $sum . ' zł. Dziękujemy za zakupy w naszym sklepie. Zapraszamy ponownie.'
+            'title' => 'Zakupiłeś ' . $this->count . ' ' . $this->products . ' o łącznej wartości ' . $this->sum . ' zł.',
+            'content' => 'Zakupiłeś ' . $this->count . ' ' . $this->products . ' o łącznej wartości ' . $this->sum . ' zł. Sprawdź swoje zamówienie w tabeli. Poniżej znajduje się twój unikalny kod zamówienia.',
+            'order' => $this->order,
+            'ticket' => $this->ticket, //Demo
+            'ending' => 'Dziękujemy za zakupy w naszym sklepie. Zapraszamy ponownie.'
         ];
     }
 }

@@ -1,6 +1,9 @@
 @extends('layouts.default')
 
 @section('content')
+    @php
+        $selected = ($selected) ? $selected : 0;
+    @endphp
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h3>
@@ -26,8 +29,8 @@
                                         </a>
                                     </div>
                                     <div class="col-9 pl-0 pr-3 pt-1">
-                                        <a class="text-body" href="{{ action('NotificationController@messages', ['selected' => $index]) }}">
-                                            <h6 class="text-justify @if(!$message->read_at) font-weight-bold @endif">{{ $message->data['title'] }}.</h6>
+                                        <a class="text-body text-decoration-none" href="{{ action('NotificationController@messages', ['selected' => $index]) }}">
+                                            <h6 class="text-justify @if(!$message->read_at) font-weight-bold @endif">{{ $message->data['title'] }}</h6>
                                             <small>{{ $message->created_at }}</small>
                                         </a>
                                     </div>
@@ -37,14 +40,68 @@
                         <div class="col-12 col-md-8 p-3">
                             <h5>
                                 <span class="font-weight-bold">Temat:</span>
-                                {{ ($selected) ? $messages[$selected]->data['title'] : $messages[0]->data['title']}}
+                                {{ $messages[$selected]->data['title'] }}
                             </h5>
                             <div>
                                 <span class="font-weight-bold">Data:</span>
-                                {{ ($selected) ? $messages[$selected]->created_at : $messages[0]->created_at}}
+                                {{ $messages[$selected]->created_at }}
                             </div>
                             <hr />
-                            {{ ($selected) ? $messages[$selected]->data['content'] : $messages[0]->data['content']}}
+                            <p>{{ $messages[$selected]->data['content'] }}</p>
+                            @isset ($messages[$selected]->data['ticket'])
+                                <h2 class="text-center my-3 py-3 font-weight-bold border-top border-bottom">{{ $messages[$selected]->data['ticket'] }}</h2>
+                            @endisset
+                            @isset ($messages[$selected]->data['order'])
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nazwa</th>
+                                            <th>Cena</th>
+                                            <th>Ilość</th>
+                                            <th>Razem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            @php 
+                                                $sum = 0 
+                                            @endphp
+                                            @foreach ($messages[$selected]->data['order']['products'] as $product)
+                                                @php 
+                                                    $sum += $product['price'] * $product['pivot']['quantity'];
+                                                @endphp
+                                                <tr>
+                                                    <td class="text-wrap" scope="row">{{ $product['title'] }}</td>
+                                                    <td class="text-nowrap">{{ $product['price'] }} zł</td>
+                                                    <td class="text-nowrap">{{ $product['pivot']['quantity'] }}</td>
+                                                    <td class="text-nowrap font-weight-bold">{{ $product['price'] * $product['pivot']['quantity'] }} zł</td>
+                                                </tr>
+                                            @endforeach
+                                            <tr class="table-active">
+                                                <td class="font-weight-bold">RAZEM</td>
+                                                <td colspan="3" class="font-weight-bold text-right">{{ $sum }} zł</td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                                <h5 class="mt-4 font-weight-bold">Dane zamówienia</h5>
+                                <p>
+                                    <i>
+                                    {{ $messages[$selected]->data['order']['first_name'] }}
+                                    {{ $messages[$selected]->data['order']['last_name'] }}<br/>
+                                    {{ $messages[$selected]->data['order']['street'] }}<br/>
+                                    {{ $messages[$selected]->data['order']['postal_code'] }}
+                                    {{ $messages[$selected]->data['order']['city'] }}<br />
+                                    {{ $messages[$selected]->data['order']['email'] }}<br/>
+                                    {{ $messages[$selected]->data['order']['phone_number'] }}<br/>
+                                    @if($messages[$selected]->data['order']['nip'])
+                                        NIP: {{ $messages[$selected]->data['order']['nip'] }}
+                                    @endif
+                                    </i>
+                                </p>
+                            @endisset
+
+                            @isset ($messages[$selected]->data['ending'])
+                                <p>{{ $messages[$selected]->data['ending'] }}</p>
+                            @endisset
                         </div>
                     @else
                         <h2 class="text-center p-4 mt-3 w-100">Nie masz żadnych powiadomień</h2>

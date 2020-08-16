@@ -25,7 +25,7 @@
                     @if($featuredProduct->images)
                     <div class="carousel-item {{ ($key==0) ? 'active' : ''}}">
                         <div class="product-image-carousel" style="background-image: url({{ asset('storage/'.json_decode($featuredProduct->images)[0]) }})"> </div>
-                        <div class="carousel-caption d-md-block">
+                        <div class="carousel-caption d-md-block" style="background-color: rgba(0,0,0, 0.4);">
                             <a href="{{ route("product", ['product' => $featuredProduct->id]) }}" class="text-white text-decoration-none">
                                 <h4 class="font-weight-bold">{{ $featuredProduct->title }}</h4>
                                 <h5>Cena: <strong>{{ $featuredProduct->price }} zł</strong></h5>
@@ -71,6 +71,7 @@
                     @endforeach
                 <a class="btn btn-primary mx-auto mt-4" href="{{ route('products') }}" role="button">Zobacz więcej</a>
             </div>
+            <hr class="py-3 mt-4" />
             <h4 class="mb-3">Najbliższe wydarzenia</h4>
             <div class="row justify-content-center align-content-center">
                 @foreach ($closestProducts as $product)

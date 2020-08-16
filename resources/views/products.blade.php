@@ -22,7 +22,7 @@
                                 <img class="card-img-top" src="https://via.placeholder.com/300x220">
                             @endif
                             <div class="card-body d-flex flex-column">
-        l                        <h4 class="card-title"><a class="text-body" href="{{ action("HomeController@product", $product) }}">{{ $product->title }}</a></h4>
+                                <h4 class="card-title"><a class="text-body" href="{{ action("HomeController@product", $product) }}">{{ $product->title }}</a></h4>
                                 <h6 class="card-subtitle text-muted mb-1"><a href="{{ action('HomeController@products', $product->category) }}">{{ $product->category->name }}</a></h6>
                                 <p class="card-text text-justify">{{ Str::substr($product->description, 0, 50)."..." }}</p>
                                 <div class="mt-auto">

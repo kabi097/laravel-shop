@@ -21,6 +21,10 @@ class NotificationController extends Controller
                 $messages[0]->markAsRead();
             }
         }
-        return view("messages", ['messages' => $messages, 'selected' => $selected]);
+        return view("messages", [
+            'messages' => $messages, 
+            'selected' => $selected,
+            'title' => 'Twoje powiadomienia'
+        ]);
     }
 }

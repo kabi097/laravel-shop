@@ -6,7 +6,7 @@
         <div class="py-5 bg-light">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-lg-9">
                         <div class="card" id="summary">
                             <div class="card-body">
                                 <h4 class="card-title font-weight-bold border-bottom pb-2">Zamówienie</h4>
@@ -26,9 +26,17 @@
                                         <tr class="border-bottom product" data-product-id="{{ $product['productId'] }}" data-price="{{ $product['product']->price }}" data-quantity="{{ $product['product']->quantity }}">
                                             <td scope="row">
                                                 <div class="d-flex">
-                                                    <img src="https://via.placeholder.com/100x100" class="img-fluid rounded mr-3" style="min-width: 100px">
+                                                    <a href="{{ route('product', ['product' => $product['product']->id]) }}">    
+                                                        @if (json_decode($product['product']->images))
+                                                            <img src="{{ Voyager::image($product['product']->getThumbnail(json_decode($product['product']->images)[0], 'cropped')) }}" style="width: 100px; height: 100px;" class="d-none d-md-block rounded mr-3">
+                                                        @else
+                                                            <img src="https://via.placeholder.com/100x100" class="d-none d-md-block rounded mr-3" style="min-width: 100px">
+                                                        @endif
+                                                    </a>
                                                     <div class="d-flex flex-column justify-content-between align-items-start">
-                                                        <h5>{{ $product['product']->title }}</h5>
+                                                        <h5>
+                                                            <a class="text-body text-decoration-none" href="{{ route('product', ['product' => $product['product']->id]) }}">{{ $product['product']->title }}</a>
+                                                        </h5>
                                                         <button type="button" class="btn btn-sm btn-light product-delete">
                                                             <i class="fa fa-trash text-danger" aria-hidden="true"></i>
                                                         </button>
@@ -155,7 +163,7 @@
                             </div>
                         @endif
                     </div>
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-lg-3">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title font-weight-bold border-bottom pb-2">Podsumowanie</h4>

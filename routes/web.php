@@ -1,5 +1,7 @@
 <?php
 
+use App\Notifications\ProductsDelivered;
+use App\Order;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +28,9 @@ Route::get('/messages/{selected?}', 'NotificationController@messages')->name('me
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+// Route::get('mail', function () {
+//     $order = Order::all()->last();
+//     return (new ProductsDelivered($order))
+//                 ->toMail($order->user);
+// });
