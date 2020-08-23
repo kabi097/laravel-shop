@@ -6,6 +6,8 @@ Prosty sklep internetowy napisany przy użyciu frameworka Laravel oraz bibliotek
 ### Demo
 https://vimeo.com/450545553
 
+![](screen.png)
+
 ## Funkcje
 - Rejestracja i logowanie
 - Przegląd produktów, paginacja, stany magazynowe
@@ -15,8 +17,6 @@ https://vimeo.com/450545553
 - Powiadomienia e-mail + przeglądarka powiadomień
 - Generowanie numerów zamówienia
 - Generator przykładowych produktów
-
-![](screen.png)
 
 ## Instrukcja
 
@@ -56,15 +56,21 @@ composer install
 ```
 php artisan migrate:fresh
 ```
-**Uwaga! To polecenie wyczyści całą dotychczasową zawartość bazy danych i utworzy tabele na nowo.**
-
-9. (opcjonalne) Wypełnij bazę danych przykładowymi danymi
+9. Zainstaluj panel administratora Voyager
+```
+php artisan voyager:install
+```
+10. Dodaj nowego użytkownika do panelu Voyager
+```
+php artisan voyager:admin admin@admin.pl --create
+```
+11. (opcjonalne) Wypełnij bazę danych przykładowymi danymi
 ```
 php artisan db:seed
 ```
-10. (opcjonalne) Pobierz przykładowe obrazki dla wszystkich produktów w bazie
+12. (opcjonalne) Pobierz przykładowe obrazki dla wszystkich produktów w bazie
 ```
 php artisan db:seed --class ProductImagesSeeder
 ```
-11. Uruchom aplikację poleceniem ``` php artisan serve ```
-12. Wejdź pod adres [localhost:8000](http://localhost:8000) i korzystaj z aplikacji.
+13. Uruchom serwer aplikacji ``` php artisan serve ```
+14. Wejdź pod adres [localhost:8000](http://localhost:8000) i korzystaj z aplikacji.
