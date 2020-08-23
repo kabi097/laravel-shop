@@ -14,7 +14,7 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('street');
@@ -28,7 +28,7 @@ class CreateOrdersTable extends Migration
         });
 
         Schema::create('order_product', function (Blueprint $table) {
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity')->default(1);
             $table->unique(['order_id', 'product_id']);

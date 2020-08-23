@@ -37,7 +37,7 @@ class ProductsDelivered extends Notification
             $this->products = 'produkty';
         }
         $this->count = count($this->order->products);
-        $this->ticket = rand(10000000,99999999);    //Demo
+        $this->ticket = $order->id;
     }
 
     /**
@@ -60,6 +60,7 @@ class ProductsDelivered extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+                    ->from('notifications@goevents.pl')
                     ->level('success')
                     ->subject('Zakupiłeś ' . $this->count . ' ' . $this->products . ' o łącznej wartości ' . $this->sum . ' zł.')
                     ->line('Zakupiłeś ' . $this->count . ' ' . $this->products . ' o łącznej wartości ' . $this->sum . ' zł. Sprawdź swoje zamówienie w tabeli. Poniżej znajduje się twój unikalny kod zamówienia.')

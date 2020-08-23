@@ -49,7 +49,10 @@
                             <hr />
                             <p>{{ $messages[$selected]->data['content'] }}</p>
                             @isset ($messages[$selected]->data['ticket'])
-                                <h2 class="text-center my-3 py-3 font-weight-bold border-top border-bottom">{{ $messages[$selected]->data['ticket'] }}</h2>
+                                <div class="border-top border-bottom text-center my-3 py-3">
+                                    <h4>Twój identyfikator zamówienia:</h4>
+                                    <h2 class="font-weight-bold">{{ $messages[$selected]->data['ticket'] }}</h2>
+                                </div>
                             @endisset
                             @isset ($messages[$selected]->data['order'])
                                 <table class="table">
