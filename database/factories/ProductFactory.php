@@ -14,7 +14,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'title' => $name[array_rand($name)] . ' ' . $group[array_rand($group)] . ' "' . strtoupper($faker->words(rand(1,3), true)) . '" w ' . $faker->city,
         'price' => rand(1, 200),
         'description' => $faker->text(400),
-        'quantity' => rand(1,10),
+        'quantity' => rand(10,100),
         'date' => $faker->dateTimeBetween('now', '+12 months'),
         'category_id' => Category::all()->random(1)->first()->id,
         'featured' => rand()%2>0 && rand()%2>0
