@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use TCG\Voyager\Voyager;
 
 class HomeController extends Controller
 {
@@ -32,7 +33,7 @@ class HomeController extends Controller
     {
         $lastProducts = Product::all()->take(6);
         $closestProducts = Product::all()->sortByDesc('date')->take(6);
-        $featuredProducts = Product::where(['featured' => true])->limit(10)->get();
+        $featuredProducts = Product::whereNotNull('images')->where(['featured' => true])->limit(10)->get();
         return view('index', [
             'title' => 'Strona główna',
             'lastProducts' => $lastProducts,
@@ -68,11 +69,9 @@ class HomeController extends Controller
     }
 
     public function add_to_cart(Request $request) {
-        // $request->session()->flush();
         if ($request->all() == []) {
             $request->session()->put('cart', []);
             return response()->json([]);
-            // return view('cart');
         }
 
         $cart = $request->session()->get('cart');
@@ -114,7 +113,14 @@ class HomeController extends Controller
         $cart = session()->get('cart');
         if ($cart) {
             foreach ($cart as $key => $product) {
-                $cart[$key]['product'] = Product::find($product['productId'])->only(['title', 'price', 'quantity']);
+                $foundProduct = Product::find($product['productId']);
+                $cart[$key]['product'] = $foundProduct->only(['title', 'price', 'quantity', 'images']);
+                if ($cart[$key]['product']['images']) {
+                    $cart[$key]['thumbnail'] = (new Voyager)->image($foundProduct->getThumbnail(json_decode($cart[$key]['product']['images'])[0], 'cropped'));
+                } else {
+                    $cart[$key]['thumbnail'] = "https://via.placeholder.com/100x100";
+                }
+                $cart[$key]['href'] = route('product', ['product' => $foundProduct->id]);
             }
         }
         return response()->json($cart);

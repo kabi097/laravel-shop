@@ -51,7 +51,7 @@
                                                     <button type="button" class="btn btn-sm btn-outline-info product-minus" @if($product['quantity']<=1) disabled @endif>
                                                         <i class="fa fa-minus-circle" aria-hidden="true"></i>
                                                     </button>
-                                                    <input type="text" name="products[{{ $key }}][quantity]" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="{{ $product['quantity'] }}" readonly>
+                                                    <input type="text" name="products[{{ $key }}][quantity]" class="form-control form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="{{ $product['quantity'] }}" readonly style="width: 50px">
                                                     <button type="button" class="btn btn-sm btn-outline-info product-plus" @if($product['quantity']>=$product['product']->quantity) disabled @endif>
                                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                                     </button>

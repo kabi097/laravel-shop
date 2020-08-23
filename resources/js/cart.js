@@ -63,9 +63,11 @@ function refreshSummary(data) {
             <tr class="border-bottom product" data-product-id="${ product.productId }" data-price="${ product.product.price }}" data-quantity="${ product.product.quantity }">
             <td scope="row">
                 <div class="d-flex">
-                    <img src="https://via.placeholder.com/100x100" class="img-fluid rounded mr-3" style="min-width: 100px">
+                    <img src="${ product.thumbnail }"  style="width: 100px; height: 100px;" class="d-none d-md-block rounded mr-3">
                     <div class="d-flex flex-column justify-content-between align-items-start">
-                        <h5>${ product.product.title }</h5>
+                        <h5>
+                            <a class="text-body text-decoration-none" href="${ product.href }">${ product.product.title }</a>                        
+                        </h5>
                         <button type="button" class="btn btn-sm btn-light product-delete">
                             <i class="fa fa-trash text-danger" aria-hidden="true"></i>
                         </button>
@@ -76,15 +78,15 @@ function refreshSummary(data) {
                 <p class="text-center text-nowrap product-single-price">${ product.product.price } zł</p>
             </td>
             <td>
-            <div class="btn-group w-50" role="group">
-            <button type="button" class="btn btn-sm btn-outline-info product-minus" ${ (product.quantity <= 1) ? 'disabled' : '' }>
-                <i class="fa fa-minus-circle" aria-hidden="true"></i>
-            </button>
-            <input type="text" name="products[${ index }][quantity]" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="${ product.quantity }" readonly>
-            <button type="button" class="btn btn-sm btn-outline-info product-plus" ${ (product.quantity >= product.product.quantity) ? 'disabled' : '' }>
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            </button>
-            </div>
+                <div class="btn-group w-50" role="group">
+                    <button type="button" class="btn btn-sm btn-outline-info product-minus" ${ (product.quantity <= 1) ? 'disabled' : '' }>
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </button>
+                    <input type="text" name="products[${ index }][quantity]" class="form-control w-50 form-control-sm product-quantity" placeholder="Ilość" aria-label="Ilość" aria-describedby="btnGroupAddon" value="${ product.quantity }" readonly style="width: 50px">
+                    <button type="button" class="btn btn-sm btn-outline-info product-plus" ${ (product.quantity >= product.product.quantity) ? 'disabled' : '' }>
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
             </td>
             <td class="text-center text-nowrap font-weight-bold product-price">
                 ${ product.product.price * product.quantity } zł
