@@ -4,7 +4,7 @@ GoEvents.pl (laravel-shop)
 Prosty sklep internetowy napisany przy użyciu frameworka Laravel oraz biblioteki jQuery. Umożliwia przegląd i zakup biletów na wydarzenia kulturalne. 
 
 ### Demo
-https://vimeo.com/450545553
+<a href="https://vimeo.com/450545553" target="_blank"><img alt="Zobacz film" src="https://i.imgur.com/u6lG4dr.png" width="700"></a>
 
 ![](screen.png)
 
